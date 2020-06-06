@@ -7,31 +7,53 @@ public class Driver {
 
     public static void main(String[] args) {
         
-        
         Scanner input = new Scanner(System.in);
-        System.out.println("Please enter the number of coordinates : ");
-        String x = input.next();
-        int n = convertToInt(x);
-        
-        System.out.println("Please enter the number of threads (has to be smaller than number of coordinates) : ");
-        String y = input.next();
-        int t = convertToInt(y);
-        boolean k = compare(n,t);
-        
-        while(k == true){
-            System.out.println("Invalid number");
-            System.out.println("Please re-enter the number of threads (has to be larger than number of coordinates) : ");
-            y = input.next();
-            t = convertToInt(y);
-            k = compare(n,t);
+        boolean inputAccepted = false;
+        int n = 0;
+        int t = 0;
+        int m = 0;
+       
+        while (!inputAccepted) {
+            try {
+                System.out.println("Please enter the number of coordinates : ");
+                n = Integer.valueOf(input.nextLine());
+                inputAccepted = true;
+            } catch (NumberFormatException e) {
+                System.out.println("Not a valid number.");
+            }
         }
         
-        System.out.println("Please enter the time limit :");
-        String z = input.next();
-        int m = convertToInt(y);
+        inputAccepted = false;
         
+        while (!inputAccepted) {
+            try {
+                System.out.println("Please enter the number of threads (has to be larger than number of coordinates) : ");
+                t = Integer.valueOf(input.nextLine());
+                boolean k = compare(n,t);
+                if(k != true){
+                    inputAccepted = true;
+                }else{
+                    System.out.println("Not a valid number.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Not a valid number.");
+            }
+        }
+          
         
+        inputAccepted = false;
         
+        while (!inputAccepted) {
+            try {
+                System.out.println("Please enter the time limit :");
+                m = Integer.valueOf(input.nextLine());
+                inputAccepted = true;
+            } catch (NumberFormatException e) {
+                System.out.println("Not a valid number.");
+            }
+        }
+        
+     
         Game game = new Game(n, t, m);
         game.generate1();
 //        game.generate2();
