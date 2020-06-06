@@ -63,7 +63,8 @@ public class Game {
 
     private void generatePoints(int n) {
         int rightLimit = 500;
-        int leftLimit = -500;
+        // int leftLimit = -500;
+        int leftLimit = 0;
         ArrayList<Double> listOfNumbers = new ArrayList<>();
         
         for (int i = 0; i < 5000; i++) {
