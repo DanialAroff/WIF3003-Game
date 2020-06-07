@@ -17,14 +17,17 @@ public class Game {
     private int m;
     private ArrayList<Point> points;
     
+    
     public Game(int n, int t, int m){
         this.n = n;
         this.t = t;
         this.m = m;
         points = new ArrayList<>();
+        Graph graph = new Graph(1000.0,0.0,0.0,1000.0);
+        
     }
 
-    private void generatePoints(int n) {
+    public void generatePoints() {
         int rightLimit = 500;
         // int leftLimit = -500;
         int leftLimit = 0;
@@ -40,7 +43,7 @@ public class Game {
         }
         
         Collections.shuffle(listOfNumbers);
-        for (int j = 0; j < this.n; j++) {
+        for (int j = 0; j < n; j++) {
             int indexForX = new Random().nextInt(listOfNumbers.size());
             int indexForY = new Random().nextInt(listOfNumbers.size());
             double x = listOfNumbers.get(indexForX);
@@ -50,6 +53,8 @@ public class Game {
             
             points.add(new Point(x, y));
         }
+        
+        
     }
     
     private boolean isInside(double[] arr, double key) {

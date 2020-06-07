@@ -55,8 +55,8 @@ public class Driver {
         
      
         Game game = new Game(n, t, m);
-        game.generate1();
-//        game.generate2();
+        game.generatePoints();
+        
     }
     
     
