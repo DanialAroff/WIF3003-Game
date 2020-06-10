@@ -30,19 +30,20 @@ public class Graph extends JPanel{
     this.y1 = y1;
     this.x2 = x2;
     this.y2 = y2;
-  
-    System.out.println("x1: " + x1 +" y1: " + y1 + " x2: " + x2 + " y2: " + y2);
-    
+
     JFrame frame =new JFrame();
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.add(new Graph());
+    frame.add(new Graph(x1,y1,x2,y2,true));
     frame.setSize(1000,1000);
     frame.setLocation(200,200);
     frame.setVisible(true); 
     }
    
-   Graph(){
-       
+   Graph(double x1, double y1, double x2, double y2,boolean t){
+    this.x1 = x1;
+    this.y1 = y1;
+    this.x2 = x2;
+    this.y2 = y2;
    }
    
     protected void paintComponent(Graphics g){
@@ -57,23 +58,23 @@ public class Graph extends JPanel{
         double scale=(double)(height-2*mar)/1000;
         g1.setPaint(Color.MAGENTA);        
         
-        System.out.println("x1: " + x1 +" y1: " + y1 + " x2: " + x2 + " y2: " + y2);
+        System.out.println("x1 : " + x1 +" y1 : " + y1 + " x2 : " + x2 + " y2 : " + y2);
         
         //draw points
-//        g1.fill(new Ellipse2D.Double(mar+x1,height-mar-scale*y1,4,4));
-//        g1.fill(new Ellipse2D.Double(mar+x2,height-mar-scale*y2,4,4));
+        g1.fill(new Ellipse2D.Double(mar+x1,height-mar-scale*y1,4,4));
+        g1.fill(new Ellipse2D.Double(mar+x2,height-mar-scale*y2,4,4));
  
         //draw lines between two points
-//        Shape l = new Line2D.Double(mar+x1, height-mar-scale*y1, mar+x2, height-mar-scale*y2);
-//        g1.draw(l);
+        Shape l = new Line2D.Double(mar+x1, height-mar-scale*y1, mar+x2, height-mar-scale*y2);
+        g1.draw(l);
 
     //Example
-        g1.fill(new Ellipse2D.Double(mar+1000,height-mar-scale*0,4,4));
-        g1.fill(new Ellipse2D.Double(mar+0,height-mar-scale*1000,4,4));
-        g1.fill(new Ellipse2D.Double(mar+1000,height-mar-scale*1000,4,4));
-
-        Shape l = new Line2D.Double(mar+1000, height-mar-scale*0, mar+0, height-mar-scale*1000);
-        g1.draw(l);
+//        g1.fill(new Ellipse2D.Double(mar+1000,height-mar-scale*0,4,4));
+//        g1.fill(new Ellipse2D.Double(mar+0,height-mar-scale*1000,4,4));
+//        g1.fill(new Ellipse2D.Double(mar+1000,height-mar-scale*1000,4,4));
+//
+//        Shape l = new Line2D.Double(mar+1000, height-mar-scale*0, mar+0, height-mar-scale*1000);
+//        g1.draw(l);
 
 
     }

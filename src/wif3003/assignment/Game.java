@@ -23,7 +23,7 @@ public class Game {
         this.t = t;
         this.m = m;
         points = new ArrayList<>();
-        Graph graph = new Graph(1000.0,0.0,0.0,1000.0);
+        Graph graph = new Graph(100.0,100.0,400.0,600.0);
         
     }
 
