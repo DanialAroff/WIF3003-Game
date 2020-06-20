@@ -68,13 +68,7 @@ public class Graph extends JPanel{
         Shape l = new Line2D.Double(mar+x1, height-mar-scale*y1, mar+x2, height-mar-scale*y2);
         g1.draw(l);
 
-    //Example
-//        g1.fill(new Ellipse2D.Double(mar+1000,height-mar-scale*0,4,4));
-//        g1.fill(new Ellipse2D.Double(mar+0,height-mar-scale*1000,4,4));
-//        g1.fill(new Ellipse2D.Double(mar+1000,height-mar-scale*1000,4,4));
-//
-//        Shape l = new Line2D.Double(mar+1000, height-mar-scale*0, mar+0, height-mar-scale*1000);
-//        g1.draw(l);
+
 
 
     }

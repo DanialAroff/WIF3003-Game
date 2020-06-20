@@ -27,7 +27,7 @@ public class Driver {
         
         while (!inputAccepted) {
             try {
-                System.out.println("Please enter the number of threads (has to be larger than number of coordinates) : ");
+                System.out.println("Please enter the number of threads (has to be smaller than number of coordinates) : ");
                 t = Integer.valueOf(input.nextLine());
                 boolean k = compare(n,t);
                 if(k != true){
@@ -56,6 +56,16 @@ public class Driver {
      
         Game game = new Game(n, t, m);
         game.generatePoints();
+        
+        Runnable a = new Threads();
+        
+        //Generate number of threads based on user input
+        for(int i = 0; i < t;i++){
+           Thread temp = new Thread(a);
+           temp.setName(Integer.toString(i));
+           temp.start();
+        }
+        
         
     }
     

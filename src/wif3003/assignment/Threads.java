@@ -4,26 +4,31 @@
  * and open the template in the editor.
  */
 package wif3003.assignment;
-import java.util.Scanner;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author User
  */
-public class Threads {
-     public static void main(String[] args) {
-      Scanner scan = new Scanner(System.in);
-        int input =0;
-        
-        MyRunnableStress runnable = new MyRunnableStress();
-        Thread thread = new Thread(runnable);
-        
-        System.out.println("Enter number of Threads: ");
-        thread.start();
-        input = scan.nextInt();    
-        
-        System.out.println("Your number of threads was: " + input);
-        
-        runnable.terminate();
-    }
+public class Threads implements Runnable {
+
+//    String name;
+//    Threads(String name){
+//        this.name = name;
+//    }
     
+    
+    @Override
+    public void run() {
+        
+        Thread t = Thread.currentThread();
+        System.out.println("Thread : " + t.getName() );
+        try {
+            Thread.sleep(5);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Threads.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}
 }

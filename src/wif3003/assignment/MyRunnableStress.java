@@ -1,3 +1,5 @@
+package wif3003.assignment;
+
 import java.io.*;
 import java.nio.*;
 import java.nio.channels.*;
