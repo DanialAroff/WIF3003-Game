@@ -2,7 +2,6 @@
 package wif3003.assignment;
 
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 public class Driver {
 
@@ -54,15 +53,20 @@ public class Driver {
             }
         }
         
+     
         Game game = new Game(n, t, m);
         game.generatePoints();
         
-        GameTimer gt = new GameTimer(m);
-        gt.start();
-        while (!gt.isTimeUp()) {
-            System.out.println(gt.getSecondPassed());
+        Runnable a = new Threads();
+        
+        //Generate number of threads based on user input
+        for(int i = 0; i < t;i++){
+           Thread temp = new Thread(a);
+           temp.setName(Integer.toString(i));
+           temp.start();
         }
-        System.exit(0);
+        
+        
     }
     
     

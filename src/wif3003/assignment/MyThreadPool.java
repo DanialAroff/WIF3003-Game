@@ -1,3 +1,5 @@
+package wif3003.assignment;
+
 public class MyThreadPool
 {
     private IList<Thread> _threads;
