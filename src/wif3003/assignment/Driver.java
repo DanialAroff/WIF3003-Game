@@ -2,6 +2,7 @@
 package wif3003.assignment;
 
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class Driver {
 
@@ -27,7 +28,7 @@ public class Driver {
         
         while (!inputAccepted) {
             try {
-                System.out.println("Please enter the number of threads (has to be larger than number of coordinates) : ");
+                System.out.println("Please enter the number of threads (has to be smaller than number of coordinates) : ");
                 t = Integer.valueOf(input.nextLine());
                 boolean k = compare(n,t);
                 if(k != true){
@@ -53,10 +54,15 @@ public class Driver {
             }
         }
         
-     
         Game game = new Game(n, t, m);
         game.generatePoints();
         
+        GameTimer gt = new GameTimer(m);
+        gt.start();
+        while (!gt.isTimeUp()) {
+            System.out.println(gt.getSecondPassed());
+        }
+        System.exit(0);
     }
     
     
