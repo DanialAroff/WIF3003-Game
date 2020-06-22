@@ -46,6 +46,7 @@ public class Graph extends JPanel{
     this.y2 = y2;
    }
    
+    @Override
     protected void paintComponent(Graphics g){
         
         super.paintComponent(g);

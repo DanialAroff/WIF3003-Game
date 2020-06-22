@@ -8,17 +8,15 @@ import java.util.Random;
 public class Game {
     
     private int n;
-    private int t;
     private int m;
     private ArrayList<Point> points;
     
     
-    public Game(int n, int t, int m){
+    public Game(int n,int m){
         this.n = n;
-        this.t = t;
         this.m = m;
         points = new ArrayList<>();
-        Graph graph = new Graph(100.0,100.0,400.0,600.0);
+     
         
     }
 
@@ -70,5 +68,5 @@ public class Game {
             }
         }
         return false;
-    }
+    }  
 }
