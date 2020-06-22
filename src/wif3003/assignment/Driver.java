@@ -64,11 +64,12 @@ public class Driver {
         
         //Generate number of threads based on user input
         for(int i = 0; i < t;i++){
-//           ArrayList<Point> points = game.getPoints();  
-//           Runnable a = new Threads(points);
-//           Thread temp = new Thread(a);
-//           temp.setName("Thread " + Integer.toString(i));
-//           temp.start();
+           ArrayList<Point> points = game.getPoints();  
+           Runnable a = new Threads(points);
+           Thread temp = new Thread(a);
+           temp.setName("Thread " + Integer.toString(i));
+           temp.start();
+
         }
         
         
@@ -84,11 +85,7 @@ public class Driver {
     
     public static boolean compare(int n, int t){
         
-        if(t > n){
-            return true;
-        }else{
-            return false;
-        }
+        return t > n;
         
     }
     
