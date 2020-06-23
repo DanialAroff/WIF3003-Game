@@ -56,6 +56,9 @@ public class Driver {
      
         Game game = new Game(n, t, m);
         game.generatePoints();
+        GameTimer timer = new GameTimer(m);
+        timer.start();
+//        if (timer.isTimeUp()) System.exit(0);
         
         Runnable a = new Threads();
         

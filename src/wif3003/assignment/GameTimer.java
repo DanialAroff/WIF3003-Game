@@ -5,8 +5,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class GameTimer {
-    private int secondPassed;
-    private int limit;
+    private int secondPassed; // how many seconds have passed
+    private int limit; // the time limit imposed
     Timer timer = new Timer();
     
     TimerTask timerTask = new TimerTask() {
@@ -17,7 +17,6 @@ public class GameTimer {
             if (secondPassed >= limit) {
                 timerTask.cancel();
                 timer.cancel();
-//                System.exit(0);
             }
         }   
     };
