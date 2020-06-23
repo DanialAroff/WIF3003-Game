@@ -7,19 +7,18 @@ import java.util.Random;
 
 public class Game {
     
-    private int n;
-    private int t;
-    private int m;
-    private ArrayList<Point> points;
+    private final int n;
+    private final int m;
+    private final ArrayList<Point> points;
+    private int fail;
     
     
-    public Game(int n, int t, int m){
+    public Game(int n,int m){
         this.n = n;
-        this.t = t;
         this.m = m;
         points = new ArrayList<>();
-        Graph graph = new Graph(100.0,100.0,400.0,600.0);
-        
+        Graph graph = new Graph(466.14,369.74,411.45,429.79);
+       
     }
 
     public void generatePoints() {
@@ -70,5 +69,42 @@ public class Game {
             }
         }
         return false;
+    }  
+    
+      //Assign two random points for a thread
+    /**
+     * TODO i am not quite sure why but sometimes it is not able to get value of a/b 
+     * 
+     */
+    public ArrayList getPoints(){
+        
+        //To store two points
+        ArrayList<Point> line = new ArrayList<>();
+        
+        //To generate random number count to get a & b
+       ArrayList<Integer> list = new ArrayList<Integer>();
+        for (int i=1; i<=n; i++) {
+            list.add(i);
+        }
+        Collections.shuffle(list);
+        int a = list.get(0);
+        int b = list.get(n-1);
+        
+        //Retrieve and set value of a & b
+        for(int k = 0; k < points.size();k++){
+            if(k==a){
+                    line.add(points.get(k));  
+//                System.out.println("a : " + points.get(k).toString());
+            }else if(k==b){ 
+                    line.add(points.get(k));    
+//                System.out.println("b : " + points.get(k).toString());
+            }
+        }
+        
+        return line;
+        
+        
     }
+    
+    
 }

@@ -1,6 +1,7 @@
 
 package wif3003.assignment;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Driver {
@@ -54,19 +55,24 @@ public class Driver {
         }
         
      
-        Game game = new Game(n, t, m);
+       
+        
+        Game game = new Game(n,m);
         game.generatePoints();
         GameTimer timer = new GameTimer(m);
         timer.start();
 //        if (timer.isTimeUp()) System.exit(0);
         
-        Runnable a = new Threads();
+        
         
         //Generate number of threads based on user input
         for(int i = 0; i < t;i++){
+           ArrayList<Point> points = game.getPoints();  
+           Runnable a = new Threads(points);
            Thread temp = new Thread(a);
-           temp.setName(Integer.toString(i));
+           temp.setName("Thread " + Integer.toString(i));
            temp.start();
+
         }
         
         
@@ -82,11 +88,7 @@ public class Driver {
     
     public static boolean compare(int n, int t){
         
-        if(t > n){
-            return true;
-        }else{
-            return false;
-        }
+        return t > n;
         
     }
     

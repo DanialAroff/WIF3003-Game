@@ -33,6 +33,12 @@ public class Point {
     public boolean isConnected() {
         return connected;
     }
+    
+    public boolean connect() {
+        connected = true;
+        return connected;
+    }
+    
     @Override
     public String toString() {
         return "(" + x + ", " + y + ")";
