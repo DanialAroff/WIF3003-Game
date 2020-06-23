@@ -10,12 +10,14 @@ public class Game {
     private final int n;
     private final int m;
     private final ArrayList<Point> points;
+    private int fail;
     
     
     public Game(int n,int m){
         this.n = n;
         this.m = m;
         points = new ArrayList<>();
+        Graph graph = new Graph(466.14,369.74,411.45,429.79);
        
     }
 
@@ -91,10 +93,10 @@ public class Game {
         //Retrieve and set value of a & b
         for(int k = 0; k < points.size();k++){
             if(k==a){
-                line.add(points.get(k));
+                    line.add(points.get(k));  
 //                System.out.println("a : " + points.get(k).toString());
-            }else if(k==b){
-               line.add(points.get(k)); 
+            }else if(k==b){ 
+                    line.add(points.get(k));    
 //                System.out.println("b : " + points.get(k).toString());
             }
         }
