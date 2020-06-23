@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 public class Driver {
 
+    static boolean timer = true;
+    
     public static void main(String[] args) {
         
         Scanner input = new Scanner(System.in);
@@ -13,6 +15,7 @@ public class Driver {
         int n = 0;
         int t = 0;
         int m = 0;
+        
        
         while (!inputAccepted) {
             try {
@@ -59,22 +62,19 @@ public class Driver {
         
         Game game = new Game(n,m);
         game.generatePoints();
-        GameTimer timer = new GameTimer(m);
-        timer.start();
+
+        ArrayList<Point> points = game.getList();  
+        Runnable a = new Threads(points,n);
+        GameTimer time = new GameTimer(m);
+        time.start();
 //        if (timer.isTimeUp()) System.exit(0);
-        
-        
         
         //Generate number of threads based on user input
         for(int i = 0; i < t;i++){
-           ArrayList<Point> points = game.getPoints();  
-           Runnable a = new Threads(points);
            Thread temp = new Thread(a);
            temp.setName("Thread " + Integer.toString(i));
            temp.start();
-
         }
-        
         
     }
     
@@ -91,5 +91,5 @@ public class Driver {
         return t > n;
         
     }
-    
+       
 }
