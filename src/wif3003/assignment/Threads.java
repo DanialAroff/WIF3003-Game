@@ -10,12 +10,11 @@ import java.util.logging.Logger;
 public class Threads implements Runnable {
   
    ArrayList<Point> points = new ArrayList<>();
-   ArrayList<Point> edges = new ArrayList<>();
+   
    private final int n;
    private final AtomicBoolean running = new AtomicBoolean(false);
-   
-    
-     
+   ArrayList<ArrayList<Line>> threadList = new ArrayList<>();
+      
     Threads(ArrayList<Point> points,int n){
         this.points = points;
         this.n = n;
@@ -34,6 +33,7 @@ public class Threads implements Runnable {
                 Thread t = Thread.currentThread();  
                 RunThread x = new RunThread(points,n);
                 running.set(true);
+                ArrayList<Line> edges = new ArrayList<>();
                 
                 while(running.get()){
                      ArrayList<Point> temp = new ArrayList<>();
@@ -41,16 +41,15 @@ public class Threads implements Runnable {
                      if(points.size()>1){
                       double x1 = points.get(0).getX();
                       double y1 = points.get(0).getY();
-                      double x2 = points.get(0).getX();
-                      double y2 = points.get(0).getY();
+                      double x2 = points.get(1).getX();
+                      double y2 = points.get(1).getY();
                 if(points.get(0).isConnected() == true || points.get(1).isConnected() == true){
                 fail++;
             
             }else if(points.get(0).isConnected() == false && points.get(0).isConnected() == false){
                 points.get(0).connect();
                 points.get(1).connect();
-                edges.add(points.get(0));
-                edges.add(points.get(1));
+                edges.add(new Line(x1,y1,x2,y2));
             }
         
             try {
@@ -67,7 +66,7 @@ public class Threads implements Runnable {
                          stopThread();
                      }
                 }
-                
+        threadList.add(edges);
         System.out.println(t.getName() + " has failed " + fail + " times.");
         System.out.println(t.getName() + " has created " + edges.size()/2 + " edges");
                 }
@@ -87,11 +86,8 @@ class RunThread{
          this.points = points;
           this.n = n;
     }
-    
-  
-    
+
      public ArrayList getPoints(){
-        
         //To store two points
         ArrayList<Point> line = new ArrayList<>();
         
@@ -116,8 +112,7 @@ class RunThread{
         }
         
         return line;
-        
-        
+
     }
     
     
