@@ -62,7 +62,7 @@ public class Threads implements Runnable {
             System.out.println(t.getName() + " : failure in assigning points (not retrieving value of points in getPoints)");
         }      
                      //i dont know how to link timer to this
-                     if(fail == 100){
+                     if(fail == 20){
                          stopThread();
                      }
                 }

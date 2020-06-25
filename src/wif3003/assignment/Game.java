@@ -75,40 +75,40 @@ public class Game {
         return false;
     }  
     
-//      //Assign two random points for a thread
-//    /**
-//     * TODO i am not quite sure why but sometimes it is not able to get value of a/b 
-//     * 
-//     */
-//    public ArrayList getPoints(){
-//        
-//        //To store two points
-//        ArrayList<Point> line = new ArrayList<>();
-//        
-//        //To generate random number count to get a & b
-//       ArrayList<Integer> list = new ArrayList<Integer>();
-//        for (int i=1; i<=n; i++) {
-//            list.add(i);
-//        }
-//        Collections.shuffle(list);
-//        int a = list.get(0);
-//        int b = list.get(n-1);
-//        
-//        //Retrieve and set value of a & b
-//        for(int k = 0; k < points.size();k++){
-//            if(k==a){
-//                    line.add(points.get(k));  
-////                System.out.println("a : " + points.get(k).toString());
-//            }else if(k==b){ 
-//                    line.add(points.get(k));    
-////                System.out.println("b : " + points.get(k).toString());
-//            }
-//        }
-//        
-//        return line;
-//        
-//        
-//    }
+      //Assign two random points for a thread
+    /**
+     * TODO i am not quite sure why but sometimes it is not able to get value of a/b 
+     * 
+     */
+    public ArrayList getPoints(){
+        
+        //To store two points
+        ArrayList<Point> line = new ArrayList<>();
+        
+        //To generate random number count to get a & b
+       ArrayList<Integer> list = new ArrayList<Integer>();
+       for (int i=0; i<n; i++) {
+            list.add(i);
+        }
+        Collections.shuffle(list);
+        int a = list.get(0);
+        int b = list.get(n-1);
+        
+        //Retrieve and set value of a & b
+        for(int k = 0; k < points.size();k++){
+            if(k==a){
+                    line.add(points.get(k));  
+//                System.out.println("a : " + points.get(k).toString());
+            }else if(k==b){ 
+                    line.add(points.get(k));    
+//                System.out.println("b : " + points.get(k).toString());
+            }
+        }
+        
+        return line;
+        
+        
+    }
     
     
 }

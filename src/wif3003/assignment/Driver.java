@@ -3,10 +3,17 @@ package wif3003.assignment;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Driver {
 
     static boolean timer = true;
+    static int fail;
+    static String threadName;
     
     public static void main(String[] args) {
         
@@ -70,12 +77,77 @@ public class Driver {
 //        if (timer.isTimeUp()) System.exit(0);
         
         //Generate number of threads based on user input
-        for(int i = 0; i < t;i++){
-           Thread temp = new Thread(a);
-           temp.setName("Thread " + Integer.toString(i));
-           temp.start();
-        }
+//        for(int i = 0; i < t;i++){
+//           Thread temp = new Thread(a);
+//           temp.setName("Thread " + Integer.toString(i));
+//           temp.start();
+//        }
         
+
+        ThreadFactory threadFactory = new ThreadFactory() {
+            private final AtomicLong threadIndex = new AtomicLong(0);
+
+            @Override
+            public Thread newThread(Runnable runnable) {
+                Thread thread = new Thread(runnable);
+                thread.setName("Thread-" + threadIndex.getAndIncrement());
+                return thread;
+            }
+        };
+
+        ExecutorService thread = Executors.newFixedThreadPool(t, threadFactory);
+
+        
+        for (int i = 0; i < t; i++) {
+
+            ArrayList<Line> edges = new ArrayList<>();
+            threadName = "";
+            fail = 0;
+
+            thread.execute(new Runnable() {
+
+                @Override
+                public void run() {
+                    outerloop:
+                    while (!Thread.currentThread().isInterrupted()) {
+                        ArrayList<Point> temp = new ArrayList<>();
+                        temp = game.getPoints();
+                        if (temp.size() > 1) {
+                            double x1 = temp.get(0).getX();
+                            double y1 = temp.get(0).getY();
+                            double x2 = temp.get(1).getX();
+                            double y2 = temp.get(1).getY();
+                            if (temp.get(0).isConnected() == true || temp.get(1).isConnected() == true) {
+                                fail++;
+
+                            } else if (temp.get(0).isConnected() == false && temp.get(0).isConnected() == false) {
+                                temp.get(0).connect();
+                                temp.get(1).connect();
+                                edges.add(new Line(x1, y1, x2, y2));
+                            }
+                        } else {
+                            System.out.println(" failure in assigning points");
+                        }
+
+                         if (fail == 20) {
+                            thread.shutdownNow();
+                            break outerloop;
+                        }
+
+                    }
+                    System.out.println(Thread.currentThread().getName() + " : " + "lines created " + edges.size() + " Failures : " + fail);
+                    threadName = Thread.currentThread().getName();
+                    
+                    for(int k = 0; k < edges.size(); k++){
+                    System.out.println("Line ("+Thread.currentThread().getName() +") " + edges.get(k).toString());   
+                    }
+                
+                }
+                
+            });
+           
+        }
+
     }
     
     
