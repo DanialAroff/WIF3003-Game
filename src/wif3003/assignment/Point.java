@@ -1,6 +1,11 @@
 
 package wif3003.assignment;
 
+/**
+ * 
+ * A model class for Point object
+ */
+
 public class Point {
     
     private double x;

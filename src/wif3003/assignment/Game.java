@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+/**
+ * 
+ * This class is used to generate the points 
+ */
+
 public class Game {
     
     private final int n;
@@ -16,7 +21,6 @@ public class Game {
         this.n = n;
         this.m = m;
         points = new ArrayList<>();
-//        Graph graph = new Graph(466.14,369.74,411.45,429.79);
        
     }
 
@@ -41,8 +45,6 @@ public class Game {
             int indexForY = new Random().nextInt(listOfNumbers.size());
             double x = listOfNumbers.get(indexForX);
             double y = listOfNumbers.get(indexForY);
-//            System.out.printf("(%d, %d)%n", indexForX, indexForY);
-            System.out.println(new Point(x, y).toString());
             
             points.add(new Point(x, y));
         }
@@ -50,36 +52,13 @@ public class Game {
         
     }
     
+    //Return list of generated points
     public ArrayList getList(){
         return points;
     }
-    
-    
-    private boolean isInside(double[] arr, double key) {
-        int low = 0;
-        int high = arr.length - 1;
-        int middle;
-
-        while (low <= high) {
-            middle = (low + high) / 2;
-            if (Double.compare(key, arr[middle]) == 0) {
-                return true;
-            }
-            else if (Double.compare(key, arr[middle]) < 0) {
-                high = middle - 1;
-            }
-            else {
-                low = middle + 1;
-            }
-        }
-        return false;
-    }  
+     
     
       //Assign two random points for a thread
-    /**
-     * TODO i am not quite sure why but sometimes it is not able to get value of a/b 
-     * 
-     */
     public ArrayList getPoints(){
         
         //To store two points
@@ -98,10 +77,8 @@ public class Game {
         for(int k = 0; k < points.size();k++){
             if(k==a){
                     line.add(points.get(k));  
-//                System.out.println("a : " + points.get(k).toString());
             }else if(k==b){ 
                     line.add(points.get(k));    
-//                System.out.println("b : " + points.get(k).toString());
             }
         }
         

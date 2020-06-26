@@ -18,11 +18,9 @@ import org.jfree.ui.RefineryUtilities;
 
 public class Driver {
 
-    static boolean timer = true;
     static final AtomicBoolean running = new AtomicBoolean(false);
     static int fail;
     static String threadName;
-    static int m = 0;
     
     public static void main(String[] args) throws InterruptedException {
         
@@ -30,9 +28,13 @@ public class Driver {
         boolean inputAccepted = false;
         int n = 0;
         int t = 0;
+        int m = 0;
+    
+        /**
+         * This section of the code is for accepting user input for the n,t and m values
+         * Validation is performed to ensure the right input values are accepted
+         */
         
-        
-       
         while (!inputAccepted) {
             try {
                 System.out.println("Please enter the number of coordinates : ");
@@ -79,20 +81,7 @@ public class Driver {
         Game game = new Game(n,m);
         game.generatePoints();
 
-        ArrayList<Point> points = game.getList();  
-        Runnable a = new Threads(points,n);
-//        GameTimer time = new GameTimer(m);
-//        time.start();
-//        if (timer.isTimeUp()) System.exit(0);
-        
-        //Generate number of threads based on user input
-//        for(int i = 0; i < t;i++){
-//           Thread temp = new Thread(a);
-//           temp.setName("Thread " + Integer.toString(i));
-//           temp.start();
-//        }
-        
-
+        //Rename the threads created
         ThreadFactory threadFactory = new ThreadFactory() {
             private final AtomicLong threadIndex = new AtomicLong(0);
 
@@ -103,23 +92,15 @@ public class Driver {
                 return thread;
             }
         };
-
-        ExecutorService thread = Executors.newFixedThreadPool(t, threadFactory);
         
-        Future<String> future = thread.submit(new MyTimer(m));
-         try {
-            System.out.println("Started..");
-            System.out.println(future.get(3, TimeUnit.SECONDS));
-            System.out.println("Finished!");
-        } catch (TimeoutException e) {
-            future.cancel(true);
-            System.out.println("Terminated");
-        } catch (ExecutionException ex) {
-            Logger.getLogger(Driver.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        //Create t number of threads and 1 thread for timer
+        ExecutorService thread = Executors.newFixedThreadPool(t + 1, threadFactory);
 
         running.set(true);
+        //To store a list of lines created by each thread
         ArrayList<ArrayList<Line>> lines = new ArrayList<>();
+        
+        //Execute thread function which is to create lines
         for (int i = 0; i < t; i++) {
 
             ArrayList<Line> edges = new ArrayList<>();
@@ -131,8 +112,8 @@ public class Driver {
                 @Override
                 public void run() {
                     
-                    outerloop:
-                    while (running.get()==true && fail <= 20) {
+                    while (running.get()==true) {
+
                         ArrayList<Point> temp = new ArrayList<>();
                         temp = game.getPoints();
                         if (temp.size() > 1) {
@@ -140,6 +121,8 @@ public class Driver {
                             double y1 = temp.get(0).getY();
                             double x2 = temp.get(1).getX();
                             double y2 = temp.get(1).getY();
+                            
+                            //isConnected means that the point is in use
                             if (temp.get(0).isConnected() == true || temp.get(1).isConnected() == true) {
                                 fail++;
 
@@ -147,39 +130,53 @@ public class Driver {
                                 temp.get(0).connect();
                                 temp.get(1).connect();
                                 Line currentLine = new Line(x1, y1, x2, y2);
-//                                edges.add(new Line(x1, y1, x2, y2));
                                 edges.add(currentLine);
-//                                lines.add(currentLine);
                             }
                         } else {
                             System.out.println(" failure in assigning points");
                         }
 
-                         if (fail >= 20) {
-//                            System.out.println("Fail " + fail);
-                            running.set(false);
-                            shutdownAndAwaitTermination(thread,m);
-                            break outerloop;
-                            
-                        }
-
+//                         if(fail==20 && edges.isEmpty()){
+//                             System.out.println("Game ended because " + Thread.currentThread().getName() + " fails to create a line after 20 attempts");
+//                             running.set(false);
+//                            shutdownAndAwaitTermination(thread,1);  
+//                         }
                     }
                     System.out.println(Thread.currentThread().getName() + " : " + "lines created " + edges.size() + " Failures : " + fail);
-                    threadName = Thread.currentThread().getName();
-//                    lines.clear();
-                    
-//                    for(int k = 0; k < edges.size(); k++){
-//                    System.out.println("Line ("+Thread.currentThread().getName() +") " + edges.get(k).toString());   
-//                    } 
-                    
+
+                    synchronized(this){
                     lines.add(edges);
+                    }
                 }
             });
         }
         
+        
+        //Execute the thread for timer with m as the timeout limit
+        Future<String> future = thread.submit(new MyTimer(m));
+         try {
+            System.out.println("Started..");
+            System.out.println(future.get(m, TimeUnit.SECONDS));
+            running.set(false);
+            System.out.println("Finished!");
+            thread.shutdown();
+        } catch (TimeoutException e) {
+            future.cancel(true);
+            System.out.println("Terminated");
+            running.set(false);
+            thread.shutdown();
+        } catch (ExecutionException ex) {
+            Logger.getLogger(Driver.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         
+         
+        
+         
         while (!thread.isTerminated()) {
             
         }
+        
+        //Generate graph for the lines created
         DrawLines chart = new DrawLines("Chart", "Chart", lines,t);
         chart.pack();
         RefineryUtilities.centerFrameOnScreen(chart);
@@ -203,9 +200,7 @@ public class Driver {
      // Preserve interrupt status
      Thread.currentThread().interrupt();
    }
-    
-   
-     }
+   }
      
     public static int convertToInt(String x){
         

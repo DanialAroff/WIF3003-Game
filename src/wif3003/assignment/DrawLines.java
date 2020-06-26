@@ -42,6 +42,7 @@ public class DrawLines extends ApplicationFrame {
       XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
       
       int count = 0;
+      //Assign colours for each thread
       for(int k = 0; k < edges.size();k++){
           
           Color colour = colours.get(k);
@@ -52,7 +53,8 @@ public class DrawLines extends ApplicationFrame {
             count++;
           }
       }
-
+      
+      xylineChart.removeLegend();
       plot.setRenderer(renderer);
       
       // setting the range of x-axis and y-axis so it can be 1000x1000
@@ -88,18 +90,19 @@ public class DrawLines extends ApplicationFrame {
     
 }
     
+    //To generate colour for each thread using HSB and add it to a list
         private void generateColour(int t){
        
-       //to get rainbow, pastel colors
             Random random = new Random();
             
             for(int i = 0; i < t; i++){
              
             float hue = random.nextFloat();
-            final float saturation = 0.9f;//1.0 for brilliant, 0.0 for dull
-            final float luminance = 1.0f; //1.0 for brighter, 0.0 for black
+            final float saturation = 0.9f;
+            final float luminance = 1.0f;
             Color temp = Color.getHSBColor(hue, saturation, luminance);
             
+            //To ensure it does not generate same colour
             while(colours.contains(temp)){
                 
                 hue = random.nextFloat();
