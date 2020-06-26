@@ -3,12 +3,17 @@ package wif3003.assignment;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jfree.ui.RefineryUtilities;
 
 public class Driver {
@@ -76,8 +81,8 @@ public class Driver {
 
         ArrayList<Point> points = game.getList();  
         Runnable a = new Threads(points,n);
-        GameTimer time = new GameTimer(m);
-        time.start();
+//        GameTimer time = new GameTimer(m);
+//        time.start();
 //        if (timer.isTimeUp()) System.exit(0);
         
         //Generate number of threads based on user input
@@ -100,6 +105,18 @@ public class Driver {
         };
 
         ExecutorService thread = Executors.newFixedThreadPool(t, threadFactory);
+        
+        Future<String> future = thread.submit(new MyTimer(m));
+         try {
+            System.out.println("Started..");
+            System.out.println(future.get(3, TimeUnit.SECONDS));
+            System.out.println("Finished!");
+        } catch (TimeoutException e) {
+            future.cancel(true);
+            System.out.println("Terminated");
+        } catch (ExecutionException ex) {
+            Logger.getLogger(Driver.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         running.set(true);
         ArrayList<ArrayList<Line>> lines = new ArrayList<>();
