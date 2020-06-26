@@ -3,18 +3,12 @@ package wif3003.assignment;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.TimerTask;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jfree.ui.RefineryUtilities;
 
 public class Driver {
@@ -24,7 +18,6 @@ public class Driver {
     static int fail;
     static String threadName;
     static int m = 0;
-    static int secondspassed = 0;
     
     public static void main(String[] args) throws InterruptedException {
         
@@ -83,8 +76,8 @@ public class Driver {
 
         ArrayList<Point> points = game.getList();  
         Runnable a = new Threads(points,n);
-//        GameTimer time = new GameTimer(m);
-//        time.start();
+        GameTimer time = new GameTimer(m);
+        time.start();
 //        if (timer.isTimeUp()) System.exit(0);
         
         //Generate number of threads based on user input
@@ -93,6 +86,7 @@ public class Driver {
 //           temp.setName("Thread " + Integer.toString(i));
 //           temp.start();
 //        }
+        
 
         ThreadFactory threadFactory = new ThreadFactory() {
             private final AtomicLong threadIndex = new AtomicLong(0);
@@ -106,31 +100,15 @@ public class Driver {
         };
 
         ExecutorService thread = Executors.newFixedThreadPool(t, threadFactory);
-        
 
         running.set(true);
-        ArrayList<Line> lines = new ArrayList<>();
-
+        ArrayList<ArrayList<Line>> lines = new ArrayList<>();
         for (int i = 0; i < t; i++) {
-            if (i == 0) {
-                Future<String> future = thread.submit(new MyTimer(m));
-        
-                try {
-                    System.out.println("Started");
-        //            System.out.println(future.get(1, TimeUnit.SECONDS));
-                    System.out.println(future.get());
-                    System.out.println("Finished");
-        //        } catch (TimeoutException e) {
-        //            future.cancel(true);
-        //            System.out.println("Terminated");
-                } catch (ExecutionException ex) {
-                    
-                }
-            }
+
             ArrayList<Line> edges = new ArrayList<>();
             threadName = "";
             fail = 0;
-            
+
             thread.execute(new Runnable() {
 
                 @Override
@@ -154,7 +132,7 @@ public class Driver {
                                 Line currentLine = new Line(x1, y1, x2, y2);
 //                                edges.add(new Line(x1, y1, x2, y2));
                                 edges.add(currentLine);
-                                lines.add(currentLine);
+//                                lines.add(currentLine);
                             }
                         } else {
                             System.out.println(" failure in assigning points");
@@ -173,9 +151,11 @@ public class Driver {
                     threadName = Thread.currentThread().getName();
 //                    lines.clear();
                     
-                    for(int k = 0; k < edges.size(); k++){
-                    System.out.println("Line ("+Thread.currentThread().getName() +") " + edges.get(k).toString());   
-                    } 
+//                    for(int k = 0; k < edges.size(); k++){
+//                    System.out.println("Line ("+Thread.currentThread().getName() +") " + edges.get(k).toString());   
+//                    } 
+                    
+                    lines.add(edges);
                 }
             });
         }
@@ -183,8 +163,7 @@ public class Driver {
         while (!thread.isTerminated()) {
             
         }
-        System.out.println(lines.size());
-        DrawLines chart = new DrawLines("Chart", "Chart", lines);
+        DrawLines chart = new DrawLines("Chart", "Chart", lines,t);
         chart.pack();
         RefineryUtilities.centerFrameOnScreen(chart);
         chart.setVisible(true);
