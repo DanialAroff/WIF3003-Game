@@ -153,10 +153,8 @@ public class Driver {
                     
                     for(int k = 0; k < edges.size(); k++){
                     System.out.println("Line ("+Thread.currentThread().getName() +") " + edges.get(k).toString());   
-                    }
-                
+                    } 
                 }
-                
             });
         }
         

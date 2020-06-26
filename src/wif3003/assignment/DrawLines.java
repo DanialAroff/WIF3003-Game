@@ -13,6 +13,7 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities; 
 import org.jfree.chart.plot.XYPlot; 
 import org.jfree.chart.ChartFactory; 
+import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.PlotOrientation; 
 import org.jfree.data.xy.XYSeriesCollection; 
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
@@ -39,25 +40,14 @@ public class DrawLines extends ApplicationFrame {
       renderer.setSeriesPaint(1 , Color.GREEN);
       renderer.setSeriesStroke(0 , new BasicStroke(4.0f));
       renderer.setSeriesStroke(1 , new BasicStroke(3.0f));
-      plot.setRenderer(renderer); 
-      setContentPane(chartPanel); 
-   }
-   
-   private XYDataset createDataset() {
-      final XYSeries firefox = new XYSeries("Firefox");          
-      firefox.add(1.0 , 1.0);          
-      firefox.add(5.0 , 4.0);          
-      firefox.add(12.0 , 6.0);          
+      plot.setRenderer(renderer);
       
-      final XYSeries chrome = new XYSeries("Chrome");          
-      chrome.add(1.0 , 4.0);          
-//      chrome.add( 2.0 , 5.0 );          
-      chrome.add(10.0 , 6.0);          
-   
-      final XYSeriesCollection dataset = new XYSeriesCollection();          
-      dataset.addSeries(firefox);          
-      dataset.addSeries(chrome);         
-      return dataset;
+      // setting the range of x-axis and y-axis so it can be 1000x1000
+      NumberAxis domain = (NumberAxis)plot.getDomainAxis();
+      domain.setRange(0.00, 1000.0);
+      NumberAxis range = (NumberAxis)plot.getRangeAxis();
+      range.setRange(0.00, 1000.0);
+      setContentPane(chartPanel); 
    }
    
     private XYDataset drawLines(ArrayList<Line> edges) {
@@ -77,12 +67,4 @@ public class DrawLines extends ApplicationFrame {
         }
         return dataset;
    }
-
-//   public static void main(String[] args) {
-//      DrawLines chart = new DrawLines("Browser Usage Statistics",
-//         "Which Browser are you using?");
-//      chart.pack();          
-//      RefineryUtilities.centerFrameOnScreen(chart);          
-//      chart.setVisible(true); 
-//   }
 }
