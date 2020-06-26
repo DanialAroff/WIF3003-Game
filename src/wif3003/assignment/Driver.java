@@ -7,21 +7,24 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Driver {
 
     static boolean timer = true;
+    static final AtomicBoolean running = new AtomicBoolean(false);
     static int fail;
     static String threadName;
+    static int m = 0;
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         
         Scanner input = new Scanner(System.in);
         boolean inputAccepted = false;
         int n = 0;
         int t = 0;
-        int m = 0;
+        
         
        
         while (!inputAccepted) {
@@ -97,7 +100,8 @@ public class Driver {
 
         ExecutorService thread = Executors.newFixedThreadPool(t, threadFactory);
 
-        
+        running.set(true);
+       
         for (int i = 0; i < t; i++) {
 
             ArrayList<Line> edges = new ArrayList<>();
@@ -108,8 +112,9 @@ public class Driver {
 
                 @Override
                 public void run() {
+                    
                     outerloop:
-                    while (!Thread.currentThread().isInterrupted()) {
+                    while (running.get()==true && fail <= 20) {
                         ArrayList<Point> temp = new ArrayList<>();
                         temp = game.getPoints();
                         if (temp.size() > 1) {
@@ -129,9 +134,12 @@ public class Driver {
                             System.out.println(" failure in assigning points");
                         }
 
-                         if (fail == 20) {
-                            thread.shutdownNow();
+                         if (fail >= 20) {
+//                            System.out.println("Fail " + fail);
+                            running.set(false);
+                            shutdownAndAwaitTermination(thread,m);
                             break outerloop;
+                            
                         }
 
                     }
@@ -147,10 +155,30 @@ public class Driver {
             });
            
         }
-
+             
     }
     
     
+   public static void shutdownAndAwaitTermination(ExecutorService pool,int m) {
+   pool.shutdown(); // Disable new tasks from being submitted
+   try {
+     // Wait a while for existing tasks to terminate
+     if (!pool.awaitTermination(m, TimeUnit.SECONDS)) {
+       pool.shutdownNow(); // Cancel currently executing tasks
+       // Wait a while for tasks to respond to being cancelled
+       if (!pool.awaitTermination(m, TimeUnit.SECONDS))
+           System.err.println("Pool did not terminate");
+     }
+   } catch (InterruptedException ie) {
+     // (Re-)Cancel if current thread also interrupted
+     pool.shutdownNow();
+     // Preserve interrupt status
+     Thread.currentThread().interrupt();
+   }
+    
+   
+     }
+     
     public static int convertToInt(String x){
         
         int y = Integer.parseInt(x);       
