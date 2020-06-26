@@ -102,7 +102,7 @@ public class Driver {
         ExecutorService thread = Executors.newFixedThreadPool(t, threadFactory);
 
         running.set(true);
-        ArrayList<Line> lines = new ArrayList<>();
+        ArrayList<ArrayList<Line>> lines = new ArrayList<>();
         for (int i = 0; i < t; i++) {
 
             ArrayList<Line> edges = new ArrayList<>();
@@ -132,7 +132,7 @@ public class Driver {
                                 Line currentLine = new Line(x1, y1, x2, y2);
 //                                edges.add(new Line(x1, y1, x2, y2));
                                 edges.add(currentLine);
-                                lines.add(currentLine);
+//                                lines.add(currentLine);
                             }
                         } else {
                             System.out.println(" failure in assigning points");
@@ -151,9 +151,11 @@ public class Driver {
                     threadName = Thread.currentThread().getName();
 //                    lines.clear();
                     
-                    for(int k = 0; k < edges.size(); k++){
-                    System.out.println("Line ("+Thread.currentThread().getName() +") " + edges.get(k).toString());   
-                    } 
+//                    for(int k = 0; k < edges.size(); k++){
+//                    System.out.println("Line ("+Thread.currentThread().getName() +") " + edges.get(k).toString());   
+//                    } 
+                    
+                    lines.add(edges);
                 }
             });
         }
@@ -161,7 +163,7 @@ public class Driver {
         while (!thread.isTerminated()) {
             
         }
-        DrawLines chart = new DrawLines("Chart", "Chart", lines);
+        DrawLines chart = new DrawLines("Chart", "Chart", lines,t);
         chart.pack();
         RefineryUtilities.centerFrameOnScreen(chart);
         chart.setVisible(true);

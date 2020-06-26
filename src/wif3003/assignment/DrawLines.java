@@ -4,6 +4,7 @@ package wif3003.assignment;
 import java.awt.Color; 
 import java.awt.BasicStroke; 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.jfree.chart.ChartPanel; 
 import org.jfree.chart.JFreeChart; 
@@ -21,13 +22,15 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 
 public class DrawLines extends ApplicationFrame {
 
-   public DrawLines(String applicationTitle, String chartTitle, ArrayList edges) {
+    private ArrayList<Color> colours = new ArrayList<>();
+    
+    
+   public DrawLines(String applicationTitle, String chartTitle, ArrayList<ArrayList<Line>> edges, int t) {
       super(applicationTitle);
-      JFreeChart xylineChart = ChartFactory.createXYLineChart(
-         chartTitle ,
+      generateColour(t);
+      JFreeChart xylineChart = ChartFactory.createXYLineChart(chartTitle ,
          "X-Axis" ,
-         "Y-Axis" ,
-         drawLines(edges) ,
+         "Y-Axis" , drawLines(edges),
          PlotOrientation.VERTICAL ,
          true , true , false);
          
@@ -35,11 +38,21 @@ public class DrawLines extends ApplicationFrame {
       chartPanel.setPreferredSize( new java.awt.Dimension(560 , 367));
       final XYPlot plot = xylineChart.getXYPlot( );
       
+      
       XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-      renderer.setSeriesPaint(0 , Color.BLUE);
-      renderer.setSeriesPaint(1 , Color.GREEN);
-      renderer.setSeriesStroke(0 , new BasicStroke(4.0f));
-      renderer.setSeriesStroke(1 , new BasicStroke(3.0f));
+      
+      int count = 0;
+      for(int k = 0; k < edges.size();k++){
+          
+          Color colour = colours.get(k);
+          
+          for(int l = 0; l < edges.get(k).size(); l++){
+            renderer.setSeriesPaint(count , colour);
+            renderer.setSeriesStroke(count , new BasicStroke(3.0f));
+            count++;
+          }
+      }
+
       plot.setRenderer(renderer);
       
       // setting the range of x-axis and y-axis so it can be 1000x1000
@@ -50,21 +63,55 @@ public class DrawLines extends ApplicationFrame {
       setContentPane(chartPanel); 
    }
    
-    private XYDataset drawLines(ArrayList<Line> edges) {
-        ArrayList<XYSeries> listOfSeries = new ArrayList();
+    private XYDataset drawLines(ArrayList<ArrayList<Line>> edges) {
         
-        for (int i = 0; i < edges.size(); i++) {
-            XYSeries currentSeries = new XYSeries("Line " + (i+1));
-            Line currentLine = edges.get(i);
+        ArrayList<XYSeries> listOfSeries = new ArrayList();
+        final XYSeriesCollection dataset = new XYSeriesCollection();      
+        int lineNum = 0;
+        
+        for(int k = 0; k < edges.size(); k++){
+            System.out.println("Thread " + k + " Lines created : " + edges.get(k).size() + " Colour : " + colours.get(k).toString());
+        for (int i = 0; i < edges.get(k).size(); i++) {
+            lineNum++;
+            XYSeries currentSeries = new XYSeries("Line " + (lineNum));
+            Line currentLine = edges.get(k).get(i);
             currentSeries.add(currentLine.getX1(), currentLine.getY1());
             currentSeries.add(currentLine.getX2(), currentLine.getY2());
             listOfSeries.add(currentSeries);
         }
-        
-        final XYSeriesCollection dataset = new XYSeriesCollection();          
-        for (int j = 0; j < listOfSeries.size(); j++) {
+      
+   }
+          for (int j = 0; j < listOfSeries.size(); j++) {
             dataset.addSeries(listOfSeries.get(j));
         }
-        return dataset;
+       return dataset;
+    
+}
+    
+        private void generateColour(int t){
+       
+       //to get rainbow, pastel colors
+            Random random = new Random();
+            
+            for(int i = 0; i < t; i++){
+             
+            float hue = random.nextFloat();
+            final float saturation = 0.9f;//1.0 for brilliant, 0.0 for dull
+            final float luminance = 1.0f; //1.0 for brighter, 0.0 for black
+            Color temp = Color.getHSBColor(hue, saturation, luminance);
+            
+            while(colours.contains(temp)){
+                
+                hue = random.nextFloat();
+            }
+       
+            temp = Color.getHSBColor(hue, saturation, luminance);
+            colours.add(temp);
+
+            }
+       
    }
+    
+    
+    
 }
