@@ -21,7 +21,7 @@ public class Game {
     }
 
     public void generatePoints() {
-        int rightLimit = 500;
+        int rightLimit = 1000;
         // int leftLimit = -500;
         int leftLimit = 0;
         ArrayList<Double> listOfNumbers = new ArrayList<>();

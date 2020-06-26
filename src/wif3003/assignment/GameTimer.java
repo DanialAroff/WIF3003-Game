@@ -38,9 +38,4 @@ public class GameTimer {
     public int getSecondPassed() {
         return secondPassed;
     }
-    
-//    public static void main(String[] args) {
-//        GameTimer gt = new GameTimer(5);
-//        gt.start();
-//    }
 }
