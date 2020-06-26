@@ -21,7 +21,7 @@ public class MyTimer implements Callable {
     public String call() throws Exception {
         long sleepTime = timeLimit * 1000;
         Thread.sleep(sleepTime);
-        return "Timeout!";
+        return "";
     }
     
     

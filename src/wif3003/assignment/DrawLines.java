@@ -72,7 +72,7 @@ public class DrawLines extends ApplicationFrame {
         int lineNum = 0;
         
         for(int k = 0; k < edges.size(); k++){
-            System.out.println("Thread " + k + " Lines created : " + edges.get(k).size() + " Colour : " + colours.get(k).toString());
+//            System.out.println("Thread " + k + " Lines created : " + edges.get(k).size() + " Colour : " + colours.get(k).toString());
         for (int i = 0; i < edges.get(k).size(); i++) {
             lineNum++;
             XYSeries currentSeries = new XYSeries("Line " + (lineNum));
@@ -92,7 +92,7 @@ public class DrawLines extends ApplicationFrame {
     
     //To generate colour for each thread using HSB and add it to a list
         private void generateColour(int t){
-       
+
             Random random = new Random();
             
             for(int i = 0; i < t; i++){

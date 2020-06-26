@@ -142,7 +142,7 @@ public class Driver {
 //                            shutdownAndAwaitTermination(thread,1);  
 //                         }
                     }
-                    System.out.println(Thread.currentThread().getName() + " : " + "lines created " + edges.size() + " Failures : " + fail);
+                    System.out.println(Thread.currentThread().getName() + " : " + "lines created " + edges.size());
 
                     synchronized(this){
                     lines.add(edges);
@@ -155,14 +155,14 @@ public class Driver {
         //Execute the thread for timer with m as the timeout limit
         Future<String> future = thread.submit(new MyTimer(m));
          try {
-            System.out.println("Started..");
+            System.out.println("The game has begun.");
             System.out.println(future.get(m, TimeUnit.SECONDS));
             running.set(false);
-            System.out.println("Finished!");
+//            System.out.println("Finished!");
             thread.shutdown();
         } catch (TimeoutException e) {
             future.cancel(true);
-            System.out.println("Terminated");
+//            System.out.println("Terminated");
             running.set(false);
             thread.shutdown();
         } catch (ExecutionException ex) {
@@ -176,6 +176,7 @@ public class Driver {
             
         }
         
+        System.out.println("The game has ended.");
         //Generate graph for the lines created
         DrawLines chart = new DrawLines("Chart", "Chart", lines,t);
         chart.pack();
