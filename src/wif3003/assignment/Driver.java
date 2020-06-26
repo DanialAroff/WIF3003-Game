@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import org.jfree.ui.RefineryUtilities;
 
 public class Driver {
 
@@ -101,7 +102,7 @@ public class Driver {
         ExecutorService thread = Executors.newFixedThreadPool(t, threadFactory);
 
         running.set(true);
-       
+        ArrayList<Line> lines = new ArrayList<>();
         for (int i = 0; i < t; i++) {
 
             ArrayList<Line> edges = new ArrayList<>();
@@ -128,7 +129,10 @@ public class Driver {
                             } else if (temp.get(0).isConnected() == false && temp.get(0).isConnected() == false) {
                                 temp.get(0).connect();
                                 temp.get(1).connect();
-                                edges.add(new Line(x1, y1, x2, y2));
+                                Line currentLine = new Line(x1, y1, x2, y2);
+//                                edges.add(new Line(x1, y1, x2, y2));
+                                edges.add(currentLine);
+                                lines.add(currentLine);
                             }
                         } else {
                             System.out.println(" failure in assigning points");
@@ -145,17 +149,22 @@ public class Driver {
                     }
                     System.out.println(Thread.currentThread().getName() + " : " + "lines created " + edges.size() + " Failures : " + fail);
                     threadName = Thread.currentThread().getName();
+//                    lines.clear();
                     
                     for(int k = 0; k < edges.size(); k++){
                     System.out.println("Line ("+Thread.currentThread().getName() +") " + edges.get(k).toString());   
-                    }
-                
+                    } 
                 }
-                
             });
-           
         }
-             
+        
+        while (!thread.isTerminated()) {
+            
+        }
+        DrawLines chart = new DrawLines("Chart", "Chart", lines);
+        chart.pack();
+        RefineryUtilities.centerFrameOnScreen(chart);
+        chart.setVisible(true);
     }
     
     
