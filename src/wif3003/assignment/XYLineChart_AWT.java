@@ -32,21 +32,21 @@ public class XYLineChart_AWT extends ApplicationFrame {
       super(applicationTitle);
       JFreeChart xylineChart = ChartFactory.createXYLineChart(
          chartTitle ,
-         "Category" ,
-         "Score" ,
+         "X" ,
+         "Y" ,
          createDataset() ,
          PlotOrientation.VERTICAL ,
          true , true , false);
          
       ChartPanel chartPanel = new ChartPanel( xylineChart );
-      chartPanel.setPreferredSize( new java.awt.Dimension( 560 , 367 ) );
+      chartPanel.setPreferredSize( new java.awt.Dimension(1000 , 1000) );
       final XYPlot plot = xylineChart.getXYPlot( );
       
       XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer( );
       renderer.setSeriesPaint( 0 , Color.GREEN );
       renderer.setSeriesPaint( 1 , Color.GREEN );
-      renderer.setSeriesStroke( 0 , new BasicStroke( 4.0f ) );
-      renderer.setSeriesStroke( 1 , new BasicStroke( 3.0f ) );
+//      renderer.setSeriesStroke( 0 , new BasicStroke( 4.0f ) );
+//      renderer.setSeriesStroke( 1 , new BasicStroke( 3.0f ) );
       plot.setRenderer( renderer ); 
       setContentPane( chartPanel ); 
    }
